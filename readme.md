@@ -11,10 +11,10 @@ In this example you can see how to automatically and manually request an **OnBeh
 
 ## CALL FLOW
 1. Client --> WEB = 401, redirection to STS (PASSIVE scenario)
-2. Client --> STS = TOKEN_1
-3. Client --(**TOKEN_1**)--> WEB = 200 OK
-4. WEB --RST OnBehalfOf(**TOKEN_1**)--> STS = **TOKEN_2** (ACTIVE scenario)
-5. WEB --(**TOKEN_2**)--> WCF service
+2. Client --> STS = **TOKEN_B** 
+3. Client --(**TOKEN_B**)--> WEB = 200 OK
+4. WEB --RST OnBehalfOf(**TOKEN_1**)--> STS = **TOKEN_D** (ACTIVE scenario)
+5. WEB --(**TOKEN_D**)--> WCF service
 
 In order to issue a **RST (Request Security Token)** message to the STS, we have two options:
 1.  leverage the _WS2007FederationBinding_ automatic mechanism that contacts STS automatically to request the **OnBehalfOf/ActAs** token for us, then call the target web service with:
@@ -50,7 +50,7 @@ In order to issue a **RST (Request Security Token)** message to the STS, we have
     In the case of the automatic RST creation, this identifier is set equal to the listening address of the web service (included the port). So you can add multiple entries to support all the behaviors. 
     * **Encryption** = select the certificate (.cer) used by this service (the same used to listen for HTTPS). We need this becasue WCF by default use symmetric tokens. If you switch to Bearer then this step is not necessary
     * Add some claim rules (i.e: copy AD attributes to Claims) to allow direct access to the service
-    * being a delegation scenario the standard claim rule that copies the "LDAP values" to Token claims is not sufficent as the Relying party receives a token with the claims already filled. We need to copy over the claims from the caller's token, so we need to create a new Claim transformation rule of type "Pass Through" for each claim we want to copy to the final token (TOKEN_2)
+    * being a delegation scenario the standard claim rule that copies the "LDAP values" to Token claims is not sufficent as the Relying party receives a token with the claims already filled. We need to copy over the claims from the caller's token, so we need to create a new Claim transformation rule of type "Pass Through" for each claim we want to copy to the final token (TOKEN_D)
 3. because we are doing selfhost for WCF service we must manually bind the certificate for SSL (_these steps are not required if IIS is used to host the service_): 
     * *netsh http add sslcert ipport=0.0.0.0:9999 certhash=thumbprint_of_ssl_server_certificate appid={XXXXX-XXXXX-XXXXXX-XXXXX-XXXX-XXXXXX}*      
     * *netsh http add urlacl url=https://+:9999/ user=EVERYONE*
