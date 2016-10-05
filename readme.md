@@ -1,5 +1,5 @@
 # WIF EXAMPLE #2 - DELEGATION SCENARIO WITH WCF SECURED SERVICE
-This example use WIF with .NET 4.5 to demonstrate a delegation scenario. There are three actors here: the client (WEB application), the WCF service and the ADFS server (STS).
+This example uses WIF with .NET 4.5 to demonstrate a delegation scenario. There are three actors here: the client (WEB application), the WCF service and the ADFS server (STS).
 The WCF service is secured with WIF/ADFS, so the client must present a valid token to access the service methods.  
 A delegation scenario means the client (WEB) retrieves the token from the ADFS server (STS) on behalf of the logged user, then the token is used to call the WCF service.
 The target service will see the identity of the user. 
